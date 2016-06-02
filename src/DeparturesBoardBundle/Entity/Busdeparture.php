@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace DeparturesBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

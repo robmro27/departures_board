@@ -1,0 +1,4 @@
+services:
+#    departures_board.example:
+#        class: DeparturesBoardBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

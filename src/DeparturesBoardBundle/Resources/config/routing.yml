@@ -1,0 +1,7 @@
+busstop_import:
+    path:     /test
+    defaults: { _controller: DeparturesBoardBundle:Busstop:import }
+    
+busstop_import_busstop:
+    path:     /testbusstop
+    defaults: { _controller: DeparturesBoardBundle:Busstop:importBusstop }

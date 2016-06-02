@@ -1,8 +1,9 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace DeparturesBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Busstop
@@ -28,7 +29,16 @@ class Busstop
      */
     private $name;
 
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255)
+     */
+    private $code;
 
+    
+    
     /**
      * @ORM\OneToMany(targetEntity="Busdeparture", mappedBy="busstop")
      */
@@ -106,5 +116,29 @@ class Busstop
     public function getBusdepartures()
     {
         return $this->busdepartures;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return Busstop
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 }

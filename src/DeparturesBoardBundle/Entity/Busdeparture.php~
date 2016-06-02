@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace DeparturesBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -98,5 +98,29 @@ class Busdeparture
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * Set busstop
+     *
+     * @param \AppBundle\Entity\Busstop $busstop
+     *
+     * @return Busdeparture
+     */
+    public function setBusstop(\AppBundle\Entity\Busstop $busstop = null)
+    {
+        $this->busstop = $busstop;
+
+        return $this;
+    }
+
+    /**
+     * Get busstop
+     *
+     * @return \AppBundle\Entity\Busstop
+     */
+    public function getBusstop()
+    {
+        return $this->busstop;
     }
 }

@@ -1,8 +1,9 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace DeparturesBoardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Busstop
@@ -28,7 +29,16 @@ class Busstop
      */
     private $name;
 
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255)
+     */
+    private $code;
 
+    
+    
     /**
      * @ORM\OneToMany(targetEntity="Busdeparture", mappedBy="busstop")
      */
@@ -72,5 +82,39 @@ class Busstop
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Add busdeparture
+     *
+     * @param \AppBundle\Entity\Busdeparture $busdeparture
+     *
+     * @return Busstop
+     */
+    public function addBusdeparture(\AppBundle\Entity\Busdeparture $busdeparture)
+    {
+        $this->busdepartures[] = $busdeparture;
+
+        return $this;
+    }
+
+    /**
+     * Remove busdeparture
+     *
+     * @param \AppBundle\Entity\Busdeparture $busdeparture
+     */
+    public function removeBusdeparture(\AppBundle\Entity\Busdeparture $busdeparture)
+    {
+        $this->busdepartures->removeElement($busdeparture);
+    }
+
+    /**
+     * Get busdepartures
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBusdepartures()
+    {
+        return $this->busdepartures;
     }
 }

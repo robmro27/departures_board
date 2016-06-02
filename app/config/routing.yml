@@ -1,3 +1,6 @@
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+    
+departures_board:
+    resource: "@DeparturesBoardBundle/Resources/config/routing.yml"
