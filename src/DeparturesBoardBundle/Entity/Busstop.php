@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Busstop
  *
  * @ORM\Table(name="busstop")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\BusstopRepository")
+ * @ORM\Entity(repositoryClass="DeparturesBoardBundle\Repository\BusstopRepository")
  */
 class Busstop
 {
@@ -37,7 +37,11 @@ class Busstop
      */
     private $code;
 
-    
+    /**
+     * @var \DateTime 
+     * @ORM\Column(type="datetime")
+     */
+    private $updated;
     
     /**
      * @ORM\OneToMany(targetEntity="Busdeparture", mappedBy="busstop")
@@ -87,11 +91,11 @@ class Busstop
     /**
      * Add busdeparture
      *
-     * @param \AppBundle\Entity\Busdeparture $busdeparture
+     * @param \DeparturesBoardBundle\Entity\Busdeparture $busdeparture
      *
      * @return Busstop
      */
-    public function addBusdeparture(\AppBundle\Entity\Busdeparture $busdeparture)
+    public function addBusdeparture(\DeparturesBoardBundle\Entity\Busdeparture $busdeparture)
     {
         $this->busdepartures[] = $busdeparture;
 
@@ -101,9 +105,9 @@ class Busstop
     /**
      * Remove busdeparture
      *
-     * @param \AppBundle\Entity\Busdeparture $busdeparture
+     * @param \DeparturesBoardBundle\Entity\Busdeparture $busdeparture
      */
-    public function removeBusdeparture(\AppBundle\Entity\Busdeparture $busdeparture)
+    public function removeBusdeparture(\DeparturesBoardBundle\Entity\Busdeparture $busdeparture)
     {
         $this->busdepartures->removeElement($busdeparture);
     }
@@ -140,5 +144,29 @@ class Busstop
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return Busstop
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }

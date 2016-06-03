@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Busdeparture
  *
  * @ORM\Table(name="busdeparture")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\BusdepartureRepository")
+ * @ORM\Entity(repositoryClass="DeparturesBoardBundle\Repository\BusdepartureRepository")
  */
 class Busdeparture
 {
@@ -24,9 +24,9 @@ class Busdeparture
     /**
      * @var int
      *
-     * @ORM\Column(name="weekday", type="smallint")
+     * @ORM\Column(name="daytype", type="string", length=255)
      */
-    private $weekday;
+    private $daytype;
 
     /**
      * @var array
@@ -35,6 +35,12 @@ class Busdeparture
      */
     private $data;
 
+    
+    /**
+     * @var \DateTime 
+     * @ORM\Column(type="datetime")
+     */
+    private $updated;
     
     /**
      * @ORM\ManyToOne(targetEntity="Busstop", inversedBy="busdepartures")
@@ -50,30 +56,6 @@ class Busdeparture
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set weekday
-     *
-     * @param integer $weekday
-     *
-     * @return Busdeparture
-     */
-    public function setWeekday($weekday)
-    {
-        $this->weekday = $weekday;
-
-        return $this;
-    }
-
-    /**
-     * Get weekday
-     *
-     * @return int
-     */
-    public function getWeekday()
-    {
-        return $this->weekday;
     }
 
     /**
@@ -103,11 +85,11 @@ class Busdeparture
     /**
      * Set busstop
      *
-     * @param \AppBundle\Entity\Busstop $busstop
+     * @param \DeparturesBoardBundle\Entity\Busstop $busstop
      *
      * @return Busdeparture
      */
-    public function setBusstop(\AppBundle\Entity\Busstop $busstop = null)
+    public function setBusstop(\DeparturesBoardBundle\Entity\Busstop $busstop = null)
     {
         $this->busstop = $busstop;
 
@@ -117,10 +99,58 @@ class Busdeparture
     /**
      * Get busstop
      *
-     * @return \AppBundle\Entity\Busstop
+     * @return \DeparturesBoardBundle\Entity\Busstop
      */
     public function getBusstop()
     {
         return $this->busstop;
+    }
+
+    /**
+     * Set daytype
+     *
+     * @param string $daytype
+     *
+     * @return Busdeparture
+     */
+    public function setDaytype($daytype)
+    {
+        $this->daytype = $daytype;
+
+        return $this;
+    }
+
+    /**
+     * Get daytype
+     *
+     * @return string
+     */
+    public function getDaytype()
+    {
+        return $this->daytype;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return Busdeparture
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }
