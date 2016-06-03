@@ -1,7 +1,9 @@
-busstop_import:
-    path:     /test
-    defaults: { _controller: DeparturesBoardBundle:Busstop:import }
+departures_page:
+    path:     /departures
+    defaults: { _controller: DeparturesBoardBundle:Departures:show }
+
+departures_api:
+    resource: "@DeparturesBoardBundle/Controller/ApiController.php"
+    prefix: /api/
+    type: rest
     
-busstop_import_busstop:
-    path:     /testbusstop
-    defaults: { _controller: DeparturesBoardBundle:Busstop:importBusstop }

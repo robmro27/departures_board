@@ -73,3 +73,13 @@ doctrine_migrations:
     namespace: Application\Migrations
     table_name: migration_versions
     name: Application Migrations
+    
+    
+    
+fos_rest:
+    view:
+        formats:
+            xml: true
+            json: true
+    routing_loader:
+        default_format: json

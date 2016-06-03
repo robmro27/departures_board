@@ -13,10 +13,15 @@ use Goutte\Client;
  */
 class Importer {
     
-    
+    /**
+     * Url uset for import
+     */
     const DEPARTURES_SITE = 'http://www.mzk.pl/';
     const DEPARTURES_BUSSTOP_SITE = 'http://www.mzk.pl/rozklady/?co=rozklad_dla_przystanku&wybrany=p%s';
     
+    /**
+     * Departures days labels
+     */
     const ODJAZDY_W_DNI_ROBOCZE = 'ODJAZDY_W_DNI_ROBOCZE';
     const ODJAZDY_W_SOBOTY = 'ODJAZDY_W_SOBOTY';
     const ODJAZDY_W_NIEDZIELE_I_SWIETA = 'ODJAZDY_W_NIEDZIELE_I_SWIETA';
@@ -51,6 +56,18 @@ class Importer {
             return $node->filter('a')->attr('href');
         });
         
+        
+        // clear old data
+        $repository = $this->em->getRepository('DeparturesBoardBundle:Busstop');
+        $busstop = $repository->findOneByCode($busstopCode);
+
+        $repository = $this->em->getRepository('DeparturesBoardBundle:Busdeparture');
+        $departures = $repository->findByBusstop($busstop);
+        foreach ( $departures as $departure ) {
+            $this->em->remove($departure);    
+        }
+        $this->em->flush();
+        
         // foreach bus get departures and direction
         foreach ( $busessLinks as $busLink ) {
             
@@ -59,6 +76,9 @@ class Importer {
             // get direction
             $direction = $crawler->filter('h2#kierunek')->text();
             $clearedDirection = trim(str_replace('Kierunek: ', '', $direction));
+            
+            // get bus number
+            $busNumber = trim($crawler->filter('h4#numer-linii')->text());
             
             // get departures
             $departures = $crawler->filter('table#odjazdy > tr > td')->each(function (Crawler $node, $i) {
@@ -78,27 +98,18 @@ class Importer {
             
             unset($hourSettings[self::UWAGA]);
             
-            // clear prev and add new departures
-            
-                // clear
-                $repository = $this->em->getRepository('DeparturesBoardBundle:Busstop');
-                $busstop = $repository->findOneByCode($busstopCode);
-
-                $repository = $this->em->getRepository('DeparturesBoardBundle:Busdeparture');
-                $departures = $repository->findByBusstop($busstop);
-                foreach ( $departures as $departure ) {
-                    $this->em->remove($departure);    
-                }
-                $this->em->flush();
+            // add new departures
             
                 //add
                 foreach ( $hourSettings as $dayType => $hours ) {
                     $departures = new \DeparturesBoardBundle\Entity\Busdeparture();
                     $departures->setBusstop($busstop);
                     $departures->setDaytype($dayType);
-                    $departures->setData(json_encode($hours));
+                    $departures->setData(implode(',', $hours));
+                    $departures->setBusnumber($busNumber);
+                    $departures->setDirection($clearedDirection);
                     $departures->setUpdated(new \DateTime());
-
+ 
                     $this->em->persist($departures);
                     $this->em->flush();
                 }
