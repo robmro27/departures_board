@@ -11,9 +11,9 @@ class DeparturesController extends Controller
     public function showAction()
     {
         
-        $importer = $this->get('departures_board.importer');
-        /* @var $importer \DeparturesBoardBundle\DependencyInjection\Importer */
-        $importer->importDeparturesForBusstop('0004');
+//        $importer = $this->get('departures_board.importer');
+//        /* @var $importer \DeparturesBoardBundle\DependencyInjection\Importer */
+//        $importer->importDeparturesForBusstop('0004');
         
         return $this->render('DeparturesBoardBundle:Departure:show.html.twig',[]);
     }

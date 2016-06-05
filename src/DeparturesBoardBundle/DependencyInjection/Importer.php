@@ -99,20 +99,18 @@ class Importer {
             unset($hourSettings[self::UWAGA]);
             
             // add new departures
-            
-                //add
-                foreach ( $hourSettings as $dayType => $hours ) {
-                    $departures = new \DeparturesBoardBundle\Entity\Busdeparture();
-                    $departures->setBusstop($busstop);
-                    $departures->setDaytype($dayType);
-                    $departures->setData(implode(',', $hours));
-                    $departures->setBusnumber($busNumber);
-                    $departures->setDirection($clearedDirection);
-                    $departures->setUpdated(new \DateTime());
- 
-                    $this->em->persist($departures);
-                    $this->em->flush();
-                }
+            foreach ( $hourSettings as $dayType => $hours ) {
+                $departures = new \DeparturesBoardBundle\Entity\Busdeparture();
+                $departures->setBusstop($busstop);
+                $departures->setDaytype($dayType);
+                $departures->setData(implode(',', $hours));
+                $departures->setBusnumber($busNumber);
+                $departures->setDirection($clearedDirection);
+                $departures->setUpdated(new \DateTime());
+
+                $this->em->persist($departures);
+                $this->em->flush();
+            }
                 
         }
     }

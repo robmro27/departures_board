@@ -2,6 +2,15 @@
 
 {% block body %}
 
-    sss
+    <div ng-app="DeparturesApp">
+        <div ng-controller="DeparturesController as DeparturesCtrl">
+            {[{ busstops }]}
+        </div>
+    </div>
     
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('angular.min.js') }}"></script>
+<script src="{{ asset('app.js') }}"></script>
 {% endblock %}
