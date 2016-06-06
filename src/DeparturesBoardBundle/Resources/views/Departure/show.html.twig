@@ -15,9 +15,9 @@
             
             <div class="departures">
                 
-                <div ng-repeat="departure in selectedBusstopDepartures">
+                <div ng-repeat="departure in selectedBusstopDeparturesByDay | orderBy : houur : reverse">
                     {[{ departure.busnumber }]}
-                    {[{ departure.data }]}
+                    {[{ departure.hours }]}
                     {[{ departure.daytype }]}
                 </div>
                 

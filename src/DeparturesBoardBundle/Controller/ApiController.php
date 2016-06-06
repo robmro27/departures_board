@@ -48,11 +48,11 @@ class ApiController extends FOSRestController {
             
         }
         
-        $departures = $busstop->getBusdepartures();
-        $criteria = Criteria::create()->where(Criteria::expr()->eq('daytype', 'sunday'));
-        $departures = $departures->matching($criteria);
+//        $departures = $busstop->getBusdepartures();
+//        $criteria = Criteria::create()->where(Criteria::expr()->eq('daytype', 'sunday'));
+//        $departures = $departures->matching($criteria);
         
-        $view = $this->view($departures, 200);
+        $view = $this->view($busstop->getBusdepartures(), 200);
         return $this->handleView($view);
     }
     

@@ -49,6 +49,13 @@ class Busdeparture
     private $busstop;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="data", type="text")
+     */
+    private $data;
+    
+    /**
      * Get id
      *
      * @return int
@@ -152,5 +159,29 @@ class Busdeparture
     public function getDirection()
     {
         return $this->direction;
+    }
+
+    /**
+     * Set data
+     *
+     * @param string $data
+     *
+     * @return Busdeparture
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * Get data
+     *
+     * @return string
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 }
