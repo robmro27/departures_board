@@ -43,20 +43,6 @@ class Busdeparture
     private $direction;
     
     /**
-     * @var array
-     *
-     * @ORM\Column(name="data", type="text")
-     */
-    private $data;
-
-    
-    /**
-     * @var \DateTime 
-     * @ORM\Column(type="datetime")
-     */
-    private $updated;
-    
-    /**
      * @ORM\ManyToOne(targetEntity="Busstop", inversedBy="busdepartures")
      * @ORM\JoinColumn(name="busstop_id", referencedColumnName="id")
      */
@@ -118,54 +104,6 @@ class Busdeparture
     public function getDaytype()
     {
         return $this->daytype;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param \DateTime $updated
-     *
-     * @return Busdeparture
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set data
-     *
-     * @param string $data
-     *
-     * @return Busdeparture
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * Get data
-     *
-     * @return string
-     */
-    public function getData()
-    {
-        return $this->data;
     }
 
     /**

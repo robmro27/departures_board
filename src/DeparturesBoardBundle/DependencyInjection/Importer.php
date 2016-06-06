@@ -25,15 +25,18 @@ class Importer {
     const ODJAZDY_W_DNI_ROBOCZE = 'ODJAZDY_W_DNI_ROBOCZE';
     const ODJAZDY_W_SOBOTY = 'ODJAZDY_W_SOBOTY';
     const ODJAZDY_W_NIEDZIELE_I_SWIETA = 'ODJAZDY_W_NIEDZIELE_I_SWIETA';
-    const UWAGA = 'UWAGA';
-    
+    const UWAGA = 'UWAGA'; // need to ommit
+   
+    /**
+     * Table labels to import
+     */
     private static $departuresLabelsArr = array (
-        'ODJAZDY_W_DNI_ROBOCZE' => 'ODJAZDY W DNI ROBOCZE',
-        'ODJAZDY_W_SOBOTY' => 'ODJAZDY W SOBOTY',
-        'ODJAZDY_W_NIEDZIELE_I_SWIETA' => 'ODJAZDY W NIEDZIELE I ŚWIĘTA',
-        'UWAGA' => 'UWAGA',
+        'working' => 'ODJAZDY W DNI ROBOCZE',
+        'saturday' => 'ODJAZDY W SOBOTY',
+        'sunday' => 'ODJAZDY W NIEDZIELE I ŚWIĘTA',
+        
+        'UWAGA' => 'UWAGA' // need to ommit
     );
-    
     
     /**
      * 
@@ -55,7 +58,6 @@ class Importer {
         $busessLinks = $crawler->filter('div#main ul')->eq(1)->children()->each(function (Crawler $node, $i) {
             return $node->filter('a')->attr('href');
         });
-        
         
         // clear old data
         $repository = $this->em->getRepository('DeparturesBoardBundle:Busstop');
@@ -88,15 +90,20 @@ class Importer {
             //group departures by day type
             $hourSettings = [];
             foreach ( $departures as $value ) {
+                
                 $value = trim($value);
                 if ( in_array( $value , self::$departuresLabelsArr ) ) {
                     $key = array_search($value, self::$departuresLabelsArr); continue;
                 }
-                $hourSettings[$key][] = $value;
-
+                
+                // clear non numeric values
+                $value = preg_replace("/[^0-9:]/", "", $value);
+                if (strlen($value) == 4 || strlen($value) == 5) { // X:XX OR XX:XX
+                    $hourSettings[$key][] = $value;
+                }
             }
             
-            unset($hourSettings[self::UWAGA]);
+            unset($hourSettings[self::UWAGA]); // ommit this
             
             // add new departures
             foreach ( $hourSettings as $dayType => $hours ) {
@@ -106,12 +113,10 @@ class Importer {
                 $departures->setData(implode(',', $hours));
                 $departures->setBusnumber($busNumber);
                 $departures->setDirection($clearedDirection);
-                $departures->setUpdated(new \DateTime());
 
                 $this->em->persist($departures);
                 $this->em->flush();
             }
-                
         }
     }
     

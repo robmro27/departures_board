@@ -1,16 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+    
     <div ng-app="DeparturesApp">
+        
         <div ng-controller="DeparturesController as DeparturesCtrl">
-            {[{ busstops }]}
+            
+            <form name="departuresForm">
+                <input ng-model="search.name"/>
+                <select ng-click="searchDepartures()" ng-model="selectedBusstop.code" size="20">
+                    <option ng-repeat="busstop in busstops | filter: search" value="{[{ busstop.code }]}">{[{ busstop.name }]}</option>
+                </select>
+            </form>
+            
+            <div class="departures">
+                
+                <div ng-repeat="departure in selectedBusstopDepartures">
+                    {[{ departure.busnumber }]}
+                    {[{ departure.data }]}
+                    {[{ departure.daytype }]}
+                </div>
+                
+            </div>
+                
         </div>
+        
     </div>
     
 {% endblock %}
 
 {% block javascripts %}
-<script src="{{ asset('angular.min.js') }}"></script>
-<script src="{{ asset('app.js') }}"></script>
+    <script src="{{ asset('angular.min.js') }}"></script>
+    <script src="{{ asset('app.js') }}"></script>
 {% endblock %}

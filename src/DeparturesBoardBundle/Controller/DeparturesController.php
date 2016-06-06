@@ -13,7 +13,8 @@ class DeparturesController extends Controller
         
 //        $importer = $this->get('departures_board.importer');
 //        /* @var $importer \DeparturesBoardBundle\DependencyInjection\Importer */
-//        $importer->importDeparturesForBusstop('0004');
+//        $importer->importDeparturesForBusstop('0022');
+////      $importer->importBusstops();
         
         return $this->render('DeparturesBoardBundle:Departure:show.html.twig',[]);
     }

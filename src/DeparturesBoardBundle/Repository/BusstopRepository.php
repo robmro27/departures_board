@@ -10,4 +10,12 @@ namespace DeparturesBoardBundle\Repository;
  */
 class BusstopRepository extends \Doctrine\ORM\EntityRepository
 {
+    
+    public function getBusstops()
+    {
+        return $this->getEntityManager()
+            ->createQuery('SELECT b.name, b.code FROM DeparturesBoardBundle:Busstop b')
+            ->getResult();
+    }
+    
 }
