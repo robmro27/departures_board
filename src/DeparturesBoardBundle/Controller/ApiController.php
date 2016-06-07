@@ -24,33 +24,35 @@ class ApiController extends FOSRestController {
     
     public function getBusdeparturesAction( $code )
     {
+        $importer = $this->get('departures_board.importer');
+        /* @var $importer \DeparturesBoardBundle\DependencyInjection\Importer */
+        
         $repository = $this->getDoctrine()->getRepository('DeparturesBoardBundle:Busstop');
 
         // get result by date if too old than importer get new data
         $date = \DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
         $date->modify('-1 day');
         
-        $query = $repository->createQueryBuilder('b')
-            ->where('b.updated >= :date')
-            ->andWhere('b.code = :code')
-            ->setParameter('date', $date)
-            ->setParameter('code', $code)
-            ->getQuery();
-        
-        $busstop = $query->getSingleResult();
-        
-        if ( count( $busstop->getBusdepartures() ) <= 0 ) {
-            
-            $importer = $this->get('departures_board.importer');
-            /* @var $importer \DeparturesBoardBundle\DependencyInjection\Importer */
+        // find busstop
+        try {
+            $query = $repository->createQueryBuilder('b')
+                ->where('b.updated >= :date')
+                ->andWhere('b.code = :code')
+                ->setParameter('date', $date)
+                ->setParameter('code', $code)
+                ->getQuery();
+            $busstop = $query->getSingleResult();
+        } catch ( \Doctrine\ORM\NoResultException $ex) {
             $importer->importDeparturesForBusstop($code);
-            $this->getDoctrine()->getManager()->refresh($busstop);
-            
+            $busstop = $query->getSingleResult();
         }
         
-//        $departures = $busstop->getBusdepartures();
-//        $criteria = Criteria::create()->where(Criteria::expr()->eq('daytype', 'sunday'));
-//        $departures = $departures->matching($criteria);
+        // another check
+        if ( count( $busstop->getBusdepartures() ) <= 0 ) {
+            $importer->importDeparturesForBusstop($code);
+            $this->getDoctrine()->getManager()->refresh($busstop);
+        }
+        
         
         $view = $this->view($busstop->getBusdepartures(), 200);
         return $this->handleView($view);

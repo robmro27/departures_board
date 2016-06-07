@@ -1,13 +1,50 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
+        
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+   
+        <!-- Bootstrap -->
+        <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+        <link href="{{ asset('custom.css') }}" rel="stylesheet" media="screen">
+        
+        <style>
+            body {
+              padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            }
+        </style>
+        
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+              <div class="container-fluid">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button>
+                    <a class="brand" href="#">Departures Table MZK Tychy</a>
+              </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            {% block body %}{% endblock %}
+            <hr>
+            <footer>
+              <p>&copy; Polcode 2016</p>
+            </footer>
+        </div>
+        
+        {% block javascripts %}
+            <script src="http://code.jquery.com/jquery.js"></script>
+            <script src="{{ asset('bootstrap/bootstrap.min.js') }}"></script>
+        {% endblock %}
     </body>
 </html>

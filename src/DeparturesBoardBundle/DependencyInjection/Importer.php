@@ -22,22 +22,21 @@ class Importer {
     /**
      * Departures days labels
      */
-    const ODJAZDY_W_DNI_ROBOCZE = 'ODJAZDY_W_DNI_ROBOCZE';
-    const ODJAZDY_W_SOBOTY = 'ODJAZDY_W_SOBOTY';
-    const ODJAZDY_W_NIEDZIELE_I_SWIETA = 'ODJAZDY_W_NIEDZIELE_I_SWIETA';
-    const UWAGA = 'UWAGA'; // need to ommit
+    const ODJAZDY_W_DNI_ROBOCZE = 'ODJAZDY W DNI ROBOCZE';
+    const ODJAZDY_W_SOBOTY = 'ODJAZDY W SOBOTY';
+    const ODJAZDY_W_NIEDZIELE_I_SWIETA = 'ODJAZDY W NIEDZIELE I ŚWIĘTA';
+   
+    const UWAGA = 'UWAGA'   ;
    
     /**
-     * Table labels to import
+     * Db daytypes
      */
-    private static $departuresLabelsArr = array (
-        'working' => 'ODJAZDY W DNI ROBOCZE',
-        'saturday' => 'ODJAZDY W SOBOTY',
-        'sunday' => 'ODJAZDY W NIEDZIELE I ŚWIĘTA',
-        
-        'UWAGA' => 'UWAGA' // need to ommit
-    );
+    const WORKING = 'working';
+    const SATURDAY = 'saturday';
+    const SUNDAY = 'sunday';
     
+    const OTHER = 'other'; // needed to ommit
+     
     /**
      * 
      * @param EntityManager $entityManager
@@ -62,6 +61,7 @@ class Importer {
         // clear old data
         $repository = $this->em->getRepository('DeparturesBoardBundle:Busstop');
         $busstop = $repository->findOneByCode($busstopCode);
+        $busstop->setUpdated(new \DateTime());
 
         $repository = $this->em->getRepository('DeparturesBoardBundle:Busdeparture');
         $departures = $repository->findByBusstop($busstop);
@@ -86,14 +86,21 @@ class Importer {
             $departures = $crawler->filter('table#odjazdy > tr > td')->each(function (Crawler $node, $i) {
                 return $node->text();
             });
-            
+                     
             //group departures by day type
             $hourSettings = [];
             foreach ( $departures as $value ) {
                 
                 $value = trim($value);
-                if ( in_array( $value , self::$departuresLabelsArr ) ) {
-                    $key = array_search($value, self::$departuresLabelsArr); continue;
+                
+                if (strpos( $value , self::ODJAZDY_W_DNI_ROBOCZE) !== false) {
+                    $key =  self::WORKING ; continue;
+                } else if ( strpos( $value , self::ODJAZDY_W_SOBOTY) !== false ) {
+                    $key = self::SATURDAY ; continue;
+                } else if ( strpos( $value , self::ODJAZDY_W_NIEDZIELE_I_SWIETA) !== false ) {
+                    $key = self::SUNDAY ; continue;
+                } else if ( strpos( $value , self::UWAGA)) {
+                    $key = self::OTHER ; continue;
                 }
                 
                 // clear non numeric values
@@ -103,7 +110,7 @@ class Importer {
                 }
             }
             
-            unset($hourSettings[self::UWAGA]); // ommit this
+            unset($hourSettings[self::OTHER]); // ommit this
             
             // add new departures
             foreach ( $hourSettings as $dayType => $hours ) {
@@ -146,7 +153,6 @@ class Importer {
             
             $busstop->setName($node->text());
             $busstop->setCode($node->attr('value'));
-            $busstop->setUpdated(new \DateTime());
             
             $this->em->persist($busstop); 
             $this->em->flush(); 
