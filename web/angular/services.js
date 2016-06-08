@@ -16,7 +16,7 @@ angular.module('DeparturesBoardServices', [])
             secs = secs % 60;
             var hours = Math.floor( minutes / 60 )
             minutes = minutes % 60;
-            return this.pad( hours )+"h "+ this.pad( minutes )+"m "+ this.pad( secs ) + "s";
+            return this.pad( hours )+"h "+ this.pad( minutes )+"m "+ this.pad( Math.floor( secs ) ) + "s";
         },
         greaterThan: function( prop, val ) {
             return function(item){
