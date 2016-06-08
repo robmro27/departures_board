@@ -9,7 +9,7 @@ angular.module('DeparturesBoardServices', [])
         saturdayLabel:'saturday',
         sundayLabel:'sunday',
         pad: function( num ) {
-            return num;
+            return ("0"+num).slice(-2);
         },
         hhmmss: function( secs ) {
             var minutes = Math.floor( secs / 60 );
