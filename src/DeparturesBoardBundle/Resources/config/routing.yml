@@ -1,5 +1,5 @@
 departures_page:
-    path:     /departures
+    path:     /
     defaults: { _controller: DeparturesBoardBundle:Departures:show }
 
 departures_api:
