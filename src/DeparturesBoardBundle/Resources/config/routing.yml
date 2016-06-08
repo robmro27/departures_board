@@ -6,4 +6,6 @@ departures_api:
     resource: "@DeparturesBoardBundle/Controller/ApiController.php"
     prefix: /api/
     type: rest
+    options:
+        expose: true
     

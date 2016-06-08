@@ -1,18 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div ng-app="DeparturesApp" ng-controller="DeparturesController as DeparturesCtrl" class="row-fluid">
+    <div ng-cloak ng-app="DeparturesApp" ng-controller="DeparturesController as DeparturesCtrl" class="row-fluid">
         
-        <div class="span3" style="position:relative;">
-            {# Loader #}
-            <div id="loader" ng-show="loading"><img src="{{ asset('box.gif') }}" alt="Loading..." /></div>
-            
-            <div class="well sidebar-nav" ng-hide="loading">
-              <input style="position:fixed;" ng-model="search"/>
-              <ul class="nav nav-list" style="overflow-y:scroll;height: 500px;">
+        <div class="span3 busstopsList">
+            <div class="well sidebar-nav">
+              <input class="busstopSearch" ng-model="search"/>
+              <ul class="nav nav-list" ng-hide="loading">
                 <li class="nav-header">Sidebar</li>
                 <li ng-repeat="busstop in busstops | filter: search">
-                    <a ng-click="searchDepartures(busstop.code, busstop.name)" href="#">{[{ busstop.name }]}</a>
+                    <a ng-click="selectBusstop(busstop.code, busstop.name)" href="#">{[{ busstop.name }]}</a>
                 </li>
               </ul>
             </div><!--/.well -->
@@ -20,35 +17,38 @@
 
         
         
-        <div class="span9" style="min-height:500px;">
+        <div class="span9" class="busstopDepartures">
+            {# Loader #}
             <div class="row-fluid">
               <div class="span9">
-                <h2>{[{ selectedBusstop }]} {[{ currentTime }]}</h2>
+                <h2>{[{ selectedName }]} {[{ currentTime }]}</h2>
                 
+                <div id="loader" ng-show="loading"><img src="{{ asset('box.gif') }}" alt="Loading..." /></div>
                 <table class="table" ng-hide="loading">
                     <tr>
                         <th>Bus number</th>
                         <th>Direction</th>
                         <th>Departure in</th>
                     </tr>
-                    <tr ng-repeat="departure in selectedBusstopDepartures | filter: greaterThan('secondsToDeparture', 0) | orderBy : 'secondsToDeparture' | limitTo: 10">
+                    <tr ng-repeat="departure in selectedBusstopDepartures | filter: helperServices.greaterThan('secondsToDeparture', 0) | orderBy : 'secondsToDeparture' | limitTo: 10">
                         <td>{[{ departure.busnumber }]}</td>
                         <td>{[{ departure.direction }]}</td>
                         <td>{[{ departure.timeToDeparture }]}</td>
                     </tr>
                 </table>
-                
               </div>
             </div>
       </div>
-        
    </div>
-    
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script src="{{ asset('angular.min.js') }}"></script>
-    <script src="{{ asset('app.js') }}"></script>
-    <script src="{{ asset('loader.js') }}"></script>
+    <script src="{{ asset('angular/app.js') }}"></script>
+    <script src="{{ asset('angular/services.js') }}"></script>
+    <script src="{{ asset('angular/controllers.js') }}"></script>
     <script src="{{ asset('moment.js') }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 {% endblock %}
