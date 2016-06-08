@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    
     <div ng-cloak ng-app="DeparturesApp" ng-controller="DeparturesController as DeparturesCtrl" class="row-fluid">
         
         <div class="span3 busstopsList">
+            <input class="busstopSearch" ng-model="search"/>
             <div class="well sidebar-nav">
-              <input class="busstopSearch" ng-model="search"/>
               <ul class="nav nav-list" ng-hide="loading">
                 <li class="nav-header">Sidebar</li>
                 <li ng-repeat="busstop in busstops | filter: search">

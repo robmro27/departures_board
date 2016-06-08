@@ -16,7 +16,7 @@ class ApiController extends FOSRestController {
         $repository = $this->getDoctrine()->getRepository('DeparturesBoardBundle:Busstop');
         $data = $repository->getBusstops();
         
-        $view = $this->view($data, 200);
+        $view = $this->view($data, 200)->setHeader('Access-Control-Allow-Origin', '*');
         return $this->handleView($view);
         
     }
@@ -54,7 +54,7 @@ class ApiController extends FOSRestController {
         }
         
         
-        $view = $this->view($busstop->getBusdepartures(), 200);
+        $view = $this->view($busstop->getBusdepartures(), 200)->setHeader('Access-Control-Allow-Origin', '*');;
         return $this->handleView($view);
     }
     
