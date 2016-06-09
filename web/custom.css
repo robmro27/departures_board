@@ -11,11 +11,12 @@
 }
 
 .busstopsList ul {
+    margin-bottom: 10px;
     overflow-y:scroll;height: 500px;
 }
 
 .busstopSearch {
-    position:fixed
+    margin-bottom: 10px;
 }
 
 .busstopDepartures {
